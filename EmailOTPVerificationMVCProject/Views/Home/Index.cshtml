@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Welcome to the OTP Application</h2>
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap.min.css" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<div class="container">
+    <div id="generate-otp">
+        <h3>Generate OTP</h3>
+        <form id="generateOtpForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Generate OTP</button>
+        </form>
+        <div id="generateOtpResult" class="mt-3"></div>
+    </div>
+
+    <div id="check-otp" class="mt-5">
+        <h3>Check OTP</h3>
+        <form id="checkOtpForm">
+            <div class="form-group">
+                <label for="otp">OTP:</label>
+                <input type="text" class="form-control" id="otp" name="otp" required />
+            </div>
+            <button type="submit" class="btn btn-success">Check OTP</button>
+        </form>
+        <div id="checkOtpResult" class="mt-3"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $('#generateOtpForm').submit(function (event) {
+        event.preventDefault();
+        var email = $('#email').val();
+        $.ajax({
+            url: '@Url.Action("GenerateOTP", "OTP")',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ email: email }),
+            success: function (data) {
+                alert('Status: ' + data.status);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+            }
+        });
+    });
+
+    $('#checkOtpForm').submit(function (event) {
+        event.preventDefault();
+        var otp = $('#otp').val();
+        $.ajax({
+            url: '@Url.Action("CheckOTP", "OTP")',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ otp: otp }),
+            success: function (data) {
+                alert('Status: ' + data.status);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+            }
+        });
+    });
+});
+</script>
